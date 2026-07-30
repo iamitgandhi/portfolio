@@ -1,0 +1,29 @@
+---
+import SocialIcon from "@/components/icons/SocialIcon.astro";
+import type { SocialLink } from "@/data/types";
+
+export interface Props {
+  link: SocialLink;
+}
+
+const { link } = Astro.props;
+---
+
+<a
+  href={link.href}
+  class="group/icon relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-surface shadow-sm outline-none transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-ink/28 hover:bg-surface-muted hover:shadow-md active:translate-y-0 active:shadow-sm focus-visible:ring-2 focus-visible:ring-ink/20"
+  aria-label={link.label}
+  target={link.id === "email" ? undefined : "_blank"}
+  rel={link.id === "email" ? undefined : "noopener noreferrer"}
+>
+  <span
+    class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-line bg-surface px-2 py-1 font-mono text-[10px] font-medium text-ink opacity-0 shadow-sm transition-opacity duration-150 group-hover/icon:opacity-100 group-focus-visible/icon:opacity-100"
+    role="tooltip"
+  >
+    {link.label}
+  </span>
+  <SocialIcon
+    id={link.id}
+    class="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-200 ease-out group-hover/icon:scale-105 group-hover/icon:text-ink"
+  />
+</a>

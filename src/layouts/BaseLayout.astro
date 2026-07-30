@@ -1,0 +1,317 @@
+---
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/jetbrains-mono/latin-400.css";
+import "@/styles/global.css";
+import {
+  canonicalUrl,
+  documentTitle,
+  ogImageUrl,
+  personJsonLd,
+  profilePageJsonLd,
+  webSiteJsonLd,
+} from "@/lib/seo";
+import type { SiteMeta, SocialLink } from "@/data/types";
+
+interface Props {
+  meta: SiteMeta;
+  social: SocialLink[];
+}
+
+const { meta, social } = Astro.props;
+const title = documentTitle(meta);
+const canonical = canonicalUrl(Astro.site, Astro.url.pathname);
+const ogImage = ogImageUrl(Astro.site, meta);
+const jsonLd = [personJsonLd(meta, Astro.site, social), webSiteJsonLd(meta, Astro.site), profilePageJsonLd(meta, Astro.site)];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WYL476JBC1"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WYL476JBC1');
+    </script>
+
+    <!-- SecurePrivacy Cookie Consent Script -->
+    <script is:inline src="https://app.secureprivacy.ai/script/6a5c3a9b6f27920a378af02f.js"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0d0d0d"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <title>{title}</title>
+    <meta name="description" content={meta.description} />
+    <meta name="author" content={meta.author} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.svg" sizes="any" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={meta.author} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    {
+      ogImage && (
+        <>
+          <meta property="og:image" content={ogImage} />
+          <meta property="og:image:alt" content={meta.author} />
+        </>
+      )
+    }
+
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={meta.title} />
+    <meta name="twitter:description" content={meta.description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Preload LCP Image -->
+    <link rel="preload" as="image" href="/AmitG.webp" type="image/webp" fetchpriority="high" />
+
+    <!-- WebGL & Animation Libraries (for interactive avatar shader) -->
+    <script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <slot name="head" />
+  </head>
+  <body>
+    <canvas id="grid" class="fixed inset-0 z-0 pointer-events-none" style="width: 100vw; height: 100vh;"></canvas>
+    <slot />
+
+    <script is:inline>
+      // ── Scroll-reveal via Intersection Observer ──
+      (function () {
+        var selectors = '.reveal, .reveal-stagger, .reveal-right';
+        var elements = document.querySelectorAll(selectors);
+        if (!elements.length) return;
+
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
+        );
+
+        elements.forEach(function (el) { observer.observe(el); });
+      })();
+
+      // ── Interactive Grid Background (Full-Page, Low-Contrast, Context-Aware) ──
+      (function () {
+        const canvas = document.getElementById("grid");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        const squareSize = 80;
+        // Grid is viewport-sized; cells are in VIEWPORT coordinates.
+        // Mouse events use clientX/Y (viewport), so everything stays consistent.
+        let vpW = window.innerWidth;
+        let vpH = window.innerHeight;
+        canvas.width  = vpW;
+        canvas.height = vpH;
+
+        const grid = [];
+
+        let darkRanges = [];
+
+        function updateDarkRanges() {
+          darkRanges = [];
+          const selectors = ['#workflow', '#faq', 'footer', '#contact > div'];
+          selectors.forEach(sel => {
+            const el = document.querySelector(sel);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              const top = rect.top + window.scrollY;
+              const bottom = rect.bottom + window.scrollY;
+              darkRanges.push({ top, bottom });
+            }
+          });
+        }
+
+        function isDarkAt(cy) {
+          const pageY = window.scrollY + cy;
+          return darkRanges.some(r => pageY >= r.top && pageY <= r.bottom);
+        }
+
+        function buildGrid() {
+          grid.length = 0;
+          for (let cx = 0; cx < vpW; cx += squareSize) {
+            for (let cy = 0; cy < vpH; cy += squareSize) {
+              grid.push({ x: cx, y: cy, alpha: 0, fading: false, lastTouched: 0 });
+            }
+          }
+        }
+
+        function getCellAt(x, y) {
+          return grid.find(cell =>
+            x >= cell.x && x < cell.x + squareSize &&
+            y >= cell.y && y < cell.y + squareSize
+          );
+        }
+
+        window.addEventListener('resize', () => {
+          vpW = window.innerWidth;
+          vpH = window.innerHeight;
+          canvas.width  = vpW;
+          canvas.height = vpH;
+          updateDarkRanges();
+          buildGrid();
+        });
+
+        window.addEventListener('mousemove', e => {
+          const cell = getCellAt(e.clientX, e.clientY);
+          if (cell && cell.alpha === 0) {
+            cell.alpha = 1;
+            cell.lastTouched = Date.now();
+            cell.fading = false;
+          }
+        });
+
+        function draw() {
+          ctx.clearRect(0, 0, vpW, vpH);
+          const now = Date.now();
+
+          for (let i = 0; i < grid.length; i++) {
+            const cell = grid[i];
+
+            // Start fade-out after 400 ms of inactivity
+            if (cell.alpha > 0 && !cell.fading && now - cell.lastTouched > 400) {
+              cell.fading = true;
+            }
+            if (cell.fading) {
+              cell.alpha = Math.max(0, cell.alpha - 0.02);
+              if (cell.alpha === 0) cell.fading = false;
+            }
+
+            if (cell.alpha <= 0) continue;
+
+            const cx = cell.x + squareSize / 2;
+            const cy = cell.y + squareSize / 2;
+            const dark = isDarkAt(cy);
+            const g = ctx.createRadialGradient(cx, cy, 4, cx, cy, squareSize * 0.9);
+            const peak = dark
+              ? `rgba(255,255,255,${(cell.alpha * 0.35).toFixed(3)})`
+              : `rgba(0,0,0,${(cell.alpha * 0.12).toFixed(3)})`;
+            g.addColorStop(0, peak);
+            g.addColorStop(1, 'transparent');
+
+            ctx.strokeStyle = g;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(cell.x + 0.5, cell.y + 0.5, squareSize - 1, squareSize - 1);
+          }
+
+          requestAnimationFrame(draw);
+        }
+
+        function start() {
+          updateDarkRanges();
+          buildGrid();
+          draw();
+        }
+
+        if (document.readyState === 'complete') {
+          start();
+        } else {
+          window.addEventListener('load', start);
+        }
+      })();
+
+      // ── 3D Tilt Card Hover Effect with Light Reflection (Glow) ──
+      (function () {
+        function initTilt() {
+          document.querySelectorAll('.tilt-card').forEach(function ($card) {
+            // Ensure card has position:relative for the glow overlay
+            var cs = window.getComputedStyle($card);
+            if (cs.position === 'static') $card.style.position = 'relative';
+
+            // Create glow overlay if not present
+            var $glow = $card.querySelector('.tilt-glow');
+            if (!$glow) {
+              $glow = document.createElement('div');
+              $glow.className = 'tilt-glow';
+              $glow.style.cssText = 'pointer-events:none;position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:inherit;z-index:1;';
+              $card.appendChild($glow);
+            }
+
+            var bounds;
+
+            $card.addEventListener('mouseenter', function () {
+              bounds = $card.getBoundingClientRect();
+              $card.style.transition = 'none';
+            });
+
+            $card.addEventListener('mousemove', function (e) {
+              var leftX  = e.clientX - bounds.left;
+              var topY   = e.clientY - bounds.top;
+              var cx     = leftX - bounds.width  / 2;
+              var cy     = topY  - bounds.height / 2;
+              var dist   = Math.sqrt(cx * cx + cy * cy);
+              var angle  = Math.log(dist + 1) * 1.5;
+
+              $card.style.transform = [
+                'scale3d(1.03,1.03,1.03)',
+                'rotate3d(' + (cy / 150) + ',' + (-cx / 150) + ',0,' + angle + 'deg)'
+              ].join(' ');
+
+              // Check if card is dark to select glow opacity
+              var cardBg = window.getComputedStyle($card).backgroundColor;
+              var isDark = false;
+              if (cardBg && cardBg !== 'transparent' && cardBg !== 'rgba(0, 0, 0, 0)') {
+                var m = cardBg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+                if (m) {
+                  var brightness = (parseInt(m[1]) * 299 + parseInt(m[2]) * 587 + parseInt(m[3]) * 114) / 1000;
+                  isDark = brightness < 120;
+                }
+              }
+              var glowColor = isDark ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.5)';
+
+              $glow.style.opacity = '1';
+              $glow.style.backgroundImage =
+                'radial-gradient(circle at ' + leftX + 'px ' + topY + 'px,' + glowColor + ',transparent 70%)';
+            });
+
+            $card.addEventListener('mouseleave', function () {
+              // Smoothly spring back to flat
+              $card.style.transition = 'transform 0.4s cubic-bezier(0.23,1,0.32,1)';
+              $card.style.transform  = '';
+              $glow.style.opacity    = '0';
+            });
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initTilt);
+        } else {
+          initTilt();
+        }
+      })();
+    </script>
+  </body>
+</html>

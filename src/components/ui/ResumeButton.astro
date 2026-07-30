@@ -1,0 +1,41 @@
+---
+export interface Props {
+  href: string;
+  label?: string;
+  fileName?: string;
+}
+
+const {
+  href,
+  label = "Download resume",
+  fileName = "Sahil_Sharma_Resume.pdf",
+} = Astro.props;
+---
+
+<a
+  href={href}
+  download={fileName}
+  class="group/icon relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-line bg-surface shadow-sm outline-none transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-ink/28 hover:bg-surface-muted hover:shadow-md active:translate-y-0 active:shadow-sm focus-visible:ring-2 focus-visible:ring-ink/20"
+  aria-label={label}
+>
+  <span
+    class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-line bg-surface px-2 py-1 font-mono text-[10px] font-medium text-ink opacity-0 shadow-sm transition-opacity duration-150 group-hover/icon:opacity-100 group-focus-visible/icon:opacity-100"
+    role="tooltip"
+  >
+    {label}
+  </span>
+  <svg
+    class="h-5 w-5 shrink-0 text-ink transition-transform duration-200 ease-out group-hover/icon:scale-105"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="7 10 12 15 17 10" />
+    <line x1="12" y1="15" x2="12" y2="3" />
+  </svg>
+</a>

@@ -1,0 +1,23 @@
+---
+import type { SocialId } from "@/data/types";
+import IconGithub from "./IconGithub.astro";
+import IconLinkedin from "./IconLinkedin.astro";
+import IconX from "./IconX.astro";
+import IconMail from "./IconMail.astro";
+import IconInstagram from "./IconInstagram.astro";
+import IconFacebook from "./IconFacebook.astro";
+
+interface Props {
+  id: SocialId;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+{id === "github" && <IconGithub class={className} />}
+{id === "linkedin" && <IconLinkedin class={className} />}
+{id === "x" && <IconX class={className} />}
+{id === "email" && <IconMail class={className} />}
+{id === "instagram" && <IconInstagram class={className} />}
+{id === "facebook" && <IconFacebook class={className} />}

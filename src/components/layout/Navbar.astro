@@ -1,0 +1,38 @@
+---
+import Container from "@/components/ui/Container.astro";
+
+interface Props {
+  author: string;
+}
+
+const { author } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 w-full py-4 transition-all duration-300">
+  <Container>
+    <nav class="flex items-center justify-between px-6 py-3 rounded-full border border-line bg-surface-muted/80 backdrop-blur-md shadow-sm">
+      <!-- Left: Logo -->
+      <a href="#top" class="font-black tracking-tight hover:text-accent transition-colors duration-200">
+        <span class="sm:hidden text-sm">{author}</span>
+        <span class="hidden sm:inline text-lg">{author}</span>
+      </a>
+
+      <!-- Middle: Links -->
+      <div class="hidden sm:flex items-center gap-6 text-sm font-semibold text-ink-muted">
+        <a href="#top" class="hover:text-ink transition-colors duration-200">Home</a>
+        <a href="#about" class="hover:text-ink transition-colors duration-200">About</a>
+        <a href="#experience" class="hover:text-ink transition-colors duration-200">Experience</a>
+      </div>
+
+      <!-- Right: Let's talk button -->
+      <div>
+        <a
+          href="#contact"
+          class="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-bold bg-ink text-surface-muted hover:bg-accent hover:text-accent-fg transition-all duration-200 shadow-sm"
+        >
+          Let's talk
+        </a>
+      </div>
+    </nav>
+  </Container>
+</header>

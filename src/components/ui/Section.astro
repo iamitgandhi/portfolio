@@ -1,0 +1,25 @@
+---
+export interface Props {
+  id?: string;
+  class?: string;
+  partition?: boolean;
+}
+
+const { id, class: className, partition = true } = Astro.props;
+---
+
+<section id={id} class="scroll-mt-6">
+  <div class:list={[className || "py-12 sm:py-16"]}>
+    <slot />
+  </div>
+  {
+    partition && (
+      <div
+        class="mx-auto w-full max-w-read px-4 sm:px-6"
+        aria-hidden="true"
+      >
+        <div class="border-b border-line" />
+      </div>
+    )
+  }
+</section>

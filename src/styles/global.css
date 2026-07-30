@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --surface: 43 15% 94%;          /* Cloud Dancer Pantone 2026 (#F0EFEB) */
+  --surface-muted: 0 0% 100%;     /* Pure white for cards */
+  --ink: 40 6% 22%;               /* Warm deep graphite charcoal (#383533) */
+  --ink-muted: 27 5% 38%;         /* Slate charcoal (#66615E) */
+  --ink-faint: 0 3% 59%;          /* Muted gray (#9A9393) */
+  --accent: 207 22% 37%;          /* Slate Blue (#4A6275) - High contrast */
+  --accent-fg: 0 0% 100%;         /* White text on accent */
+  --ring: 207 22% 37%;
+  --line: 40 8% 88%;              /* Soft warm border line (#E3E0DA) */
+  --tag-bg: 43 15% 90%;           /* Warm badge background (#E5E2DB) */
+  --tag-fg: 40 6% 22%;            /* Warm badge text */
+  --tag-edge: 40 8% 84%;          /* Warm badge border */
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans text-[0.9375rem] leading-[1.7];
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight font-semibold;
+  }
+
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-ring;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      }
+    }
+  }
+
+/* ── Custom responsive overrides ── */
+.max-w-read {
+  max-width: 1200px !important;
+}
+
+@media (min-width: 1050px) {
+  .sm\:w-24 {
+    width: 22rem !important;
+  }
+  .sm\:h-24 {
+    height: 22rem !important;
+  }
+}
+
+.justify-end {
+  justify-content: flex-start !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATION SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Keyframes ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Page-load: Hero stagger ── */
+.anim-hero-badge {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+}
+.anim-hero-label {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.22s forwards;
+}
+.anim-hero-heading {
+  opacity: 0;
+  animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.34s forwards;
+}
+.anim-hero-bio {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.46s forwards;
+}
+.anim-hero-socials {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.58s forwards;
+}
+.anim-hero-avatar {
+  opacity: 0;
+  animation: scaleIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+}
+
+/* ── Page-load: Navbar ── */
+.anim-navbar {
+  animation: slideDown 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+}
+
+/* ── Scroll-triggered: base state (JS adds .is-visible) ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+              transform 0.65s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger siblings */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1),
+              transform 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal-stagger.is-visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0s; }
+.reveal-stagger.is-visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.08s; }
+.reveal-stagger.is-visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.16s; }
+.reveal-stagger.is-visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.24s; }
+.reveal-stagger.is-visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.32s; }
+.reveal-stagger.is-visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 0.40s; }
+
+/* slide-right variant for timeline / workflow steps */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+              transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ── 3D Tilt Card and Interactive Glow Highlight ── */
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+}
+
+.tilt-card > * {
+  transform: translateZ(8px);
+}
+
+.glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}

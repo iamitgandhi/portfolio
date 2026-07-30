@@ -1,0 +1,62 @@
+---
+import Container from "@/components/ui/Container.astro";
+
+const steps = [
+  {
+    num: "01",
+    title: "Discovery",
+    desc: "Understanding your business objectives, current bottlenecks, data sources, and workflow requirements.",
+  },
+  {
+    num: "02",
+    title: "Architecture",
+    desc: "Designing PODS/CPT structures, mapping external API payloads, and defining WordPress data pipelines.",
+  },
+  {
+    num: "03",
+    title: "Integration",
+    desc: "Developing custom plugins, connecting REST APIs, web scraping, and building Gravity Forms automation.",
+  },
+  {
+    num: "04",
+    title: "Optimization & Profiling",
+    desc: "Profiling database queries, implementing server-level caching, payment testing, and plugin conflict resolutions.",
+  },
+  {
+    num: "05",
+    title: "Launch & Monitoring",
+    desc: "Executing safe deployment workflows, staging-to-production sync, and setting up error logging/analytics.",
+  },
+];
+---
+
+<section id="workflow" class="py-16 sm:py-24 bg-[#0a0a0a] text-neutral-100" style="color-scheme: dark;">
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-12">
+      <!-- Left: Heading -->
+      <div class="lg:col-span-4 flex flex-col gap-4 reveal">
+        <div class="flex">
+          <span class="inline-flex px-2.5 py-0.5 rounded-full bg-white text-[#121212] text-[10px] font-bold uppercase tracking-[0.2em] font-display">Workflow</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white leading-tight">
+          A simple and efficient process to bring your digital operations to life.
+        </h2>
+      </div>
+
+      <!-- Right: Steps -->
+      <div class="lg:col-span-8 flex flex-col gap-6 reveal-stagger">
+        {
+          steps.map((step) => (
+            <div class="flex gap-6 p-6 rounded-3xl bg-[#121212] border border-[#222222] hover:border-[#333333] transition-colors duration-300">
+              <span class="text-2xl font-black text-[#A793AC] font-display shrink-0">{step.num}</span>
+              <div class="flex flex-col gap-1">
+                <h3 class="text-lg font-bold text-white font-display">{step.title}</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</section>

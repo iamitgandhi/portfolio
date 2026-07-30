@@ -1,0 +1,79 @@
+---
+import Badge from "@/components/ui/Badge.astro";
+import IconExternalLink from "@/components/icons/IconExternalLink.astro";
+import type { ProjectLink } from "@/data/types";
+
+export interface Props {
+  title: string;
+  description: string;
+  href?: string;
+  meta?: string;
+  links?: ProjectLink[];
+  tags: string[];
+}
+
+const { title, description, href, meta, links = [], tags } = Astro.props;
+
+const externalLinkClass =
+  "inline-flex items-center gap-1 transition hover:text-accent [&:hover_svg]:text-accent";
+---
+
+<article class="flex flex-col gap-1.5">
+  <div class="flex flex-wrap items-baseline justify-between gap-2">
+    <div class="min-w-0">
+      <h3 class="text-[1.05rem] font-semibold leading-snug text-ink">
+        {
+          href ? (
+            <a
+              href={href}
+              class={`${externalLinkClass} border-b border-dotted border-ink-muted text-ink decoration-transparent hover:border-accent`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {title}
+              <IconExternalLink class="text-ink-muted" />
+              <span class="sr-only"> (opens in new tab)</span>
+            </a>
+          ) : (
+            title
+          )
+        }
+      </h3>
+      {meta && (
+        <p class="mt-0.5 text-[0.75rem] font-mono text-ink-muted">{meta}</p>
+      )}
+    </div>
+    {
+      tags.length > 0 && (
+        <div class="flex max-w-full flex-wrap justify-end gap-1.5">
+          {tags.map((t) => (
+            <Badge>{t}</Badge>
+          ))}
+        </div>
+      )
+    }
+  </div>
+  <p class="m-0 max-w-prose text-[0.9375rem] leading-relaxed text-ink">
+    {description}
+  </p>
+  {
+    links.length > 0 && (
+      <ul class="m-0 flex list-none flex-wrap gap-x-3 gap-y-1 p-0" role="list">
+        {links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class={`${externalLinkClass} text-[0.8125rem] text-ink-muted underline decoration-dotted underline-offset-2`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.label}
+              <IconExternalLink />
+              <span class="sr-only"> (opens in new tab)</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>

@@ -1,0 +1,434 @@
+---
+import Section from "@/components/ui/Section.astro";
+import Container from "@/components/ui/Container.astro";
+import type { HeroContent, SocialLink } from "@/data/types";
+import SocialChip from "@/components/ui/SocialChip.astro";
+import ResumeButton from "@/components/ui/ResumeButton.astro";
+
+interface Props {
+  hero: HeroContent;
+  social: SocialLink[];
+}
+
+const { hero, social } = Astro.props;
+---
+
+<Section class="pt-4 pb-8 sm:pb-12 lg:pt-12">
+  <Container>
+    <div class="grid gap-6 lg:gap-8 lg:grid-cols-12 items-center">
+      <!-- Left side: Text content -->
+      <div class="lg:col-span-7 flex flex-col gap-6 order-2 lg:order-1">
+        <!-- Status indicator badge -->
+        <div class="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full border border-line bg-surface-muted shadow-sm reveal">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="text-xs font-semibold text-ink-muted">Available for freelance & full-time roles</span>
+        </div>
+
+        <!-- Name and Role subtitle -->
+        <div class="reveal">
+          <span class="text-xs font-semibold uppercase tracking-[0.15em] text-accent font-display">WooCommerce & WordPress Specialist</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-[1.1] tracking-tight text-ink mt-2">
+            I build high-performance e-commerce stores & custom workflow automations.
+          </h1>
+        </div>
+
+        <!-- Short bio/summary -->
+        <p class="text-base sm:text-lg text-ink-muted leading-relaxed max-w-prose reveal">
+          {hero.summary}
+        </p>
+
+        <!-- Social and Resume buttons -->
+        <div class="flex flex-wrap items-center gap-3 mt-4 reveal">
+          {social.map((s) => <SocialChip link={s} />)}
+          {
+            hero.resume && (
+              <ResumeButton
+                href={hero.resume.href}
+                label={hero.resume.label}
+                fileName={hero.resume.fileName}
+              />
+            )
+          }
+        </div>
+      </div>
+
+      <!-- Right side: Big professional avatar -->
+      <div class="lg:col-span-5 flex justify-center lg:justify-end order-1 lg:order-2 reveal">
+        {
+          hero.avatar && (
+            <div class="relative w-full aspect-square sm:w-72 lg:w-[25rem] lg:h-auto lg:aspect-[2/2.5] rounded-[20px] overflow-hidden border border-line shadow-lg bg-surface-muted" id="avatar-container">
+              <!-- WebGL Canvas for 3D Shader Displacement (starts invisible, fades in on successful WebGL load) -->
+              <canvas id="avatar-canvas" class="absolute inset-0 w-full h-full object-cover z-10 opacity-0 transition-opacity duration-500 pointer-events-none"></canvas>
+              
+              <!-- Fallback static Image (always visible initially, fades out only if WebGL succeeds) -->
+              <img
+                id="avatar-img"
+                src="/AmitG.webp"
+                alt={hero.avatar.alt}
+                loading="eager"
+                class="absolute inset-0 w-full h-full object-cover rounded-[20px] transition-opacity duration-300"
+                style={{ objectPosition: '50% 0%' }}
+              />
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </Container>
+
+  <!-- Interactive 3D WebGL Avatar Shader Script (with robust local texture generation and graceful degradation) -->
+  <script is:inline>
+    (function () {
+      function initHeroWebGL() {
+        const canvas = document.getElementById('avatar-canvas');
+        const img = document.getElementById('avatar-img');
+        if (!canvas || !img || !window.THREE || !window.gsap) {
+          console.warn("Required libraries (Three.js or GSAP) not found. WebGL avatar shader is disabled.");
+          return;
+        }
+        // Disable WebGL glitch avatar on mobile and tablet devices (screen width < 1024px)
+        if (window.innerWidth < 1024) {
+          return;
+        }
+
+      // Safe check for local file system preview (bypasses WebGL texture loaders to prevent CORS crashes)
+      if (window.location.protocol === 'file:') {
+        console.warn("Local file protocol detected. WebGL image texture loading disabled due to browser CORS policies. Using high-performance static fallback image.");
+        return;
+      }
+
+      try {
+        const texture = new THREE.Texture(img);
+        // Optimize for non-power-of-two (NPOT) texture dimensions
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.generateMipmaps = false;
+
+        class PlaneSubject {
+          raycaster = new THREE.Raycaster();
+          scene = null;
+
+          constructor(scene) {
+            const geometry = new THREE.PlaneGeometry(6.8, 6.8);
+            const material = new THREE.ShaderMaterial({
+              vertexShader: `
+                varying vec2 vUv; 
+                void main() {
+                  vUv = uv;
+                  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+              `,
+              fragmentShader: `
+                precision highp float; 
+
+                uniform sampler2D uTexture;
+                uniform float imageAspectRatio;
+                uniform float aspectRatio;
+                uniform float opacity;
+                uniform float hover;
+                uniform vec2 uMouse;   // cursor UV in screen [0,1] space
+                varying vec2 vUv;
+
+                float exponentialInOut(float t) {
+                  return t == 0.0 || t == 1.0 
+                    ? t 
+                    : t < 0.5
+                      ? 0.5 * pow(2.0, (20.0 * t) - 10.0)
+                      : -0.5 * pow(2.0, 10.0 - (t * 20.0)) + 1.0;
+                } 
+
+                void main() {
+                  vec2 uv = vUv;
+
+                  // object-fit: cover, object-position: 50% 0% (top-center)
+                  // In Three.js UV space: y=0 = BOTTOM, y=1 = TOP
+                  if (imageAspectRatio > aspectRatio) {
+                    float s = aspectRatio / imageAspectRatio;
+                    uv.x = vUv.x * s + (1.0 - s) * 0.5;
+                  } else {
+                    float s = imageAspectRatio / aspectRatio;
+                    uv.y = vUv.y * s + (1.0 - s);
+                  }
+
+                  // Convert mouse screen UV to the same image UV space
+                  vec2 mouseUV = uMouse;
+                  if (imageAspectRatio > aspectRatio) {
+                    float s = aspectRatio / imageAspectRatio;
+                    mouseUV.x = uMouse.x * s + (1.0 - s) * 0.5;
+                  } else {
+                    float s = imageAspectRatio / aspectRatio;
+                    mouseUV.y = uMouse.y * s + (1.0 - s);
+                  }
+
+                  // Subtle zoom toward top-center pivot
+                  float zoomLevel = .024;
+                  float hoverLevel = exponentialInOut(min(1., (distance(vec2(.5, 0.85), uv) * hover) + hover));
+                  vec2 pivot = vec2(0.5, 1.0);
+                  uv = pivot + (uv - pivot) * (1. - zoomLevel * hoverLevel);
+                  uv = clamp(uv, 0., 1.);
+
+                  // Cursor-following glitch — intensity based on proximity to mouse
+                  float dist = distance(uv, mouseUV);
+                  float radius = 0.35;  // effect radius in UV space
+                  float proximity = hover * max(0.0, 1.0 - dist / radius);
+                  float glitch = exponentialInOut(proximity);
+
+                  vec4 color = texture2D(uTexture, uv);
+
+                  if (glitch > 0.001) {
+                    // Direction vector from cursor to current fragment (for directional RGB shift)
+                    vec2 dir = normalize(uv - mouseUV + vec2(0.00001, 0.0));
+                    float intensity = glitch * 0.010;
+
+                    // Pixel displace — wobble along red channel brightness
+                    vec2 dispUV = uv + dir * color.r * glitch * 0.018;
+                    color = texture2D(uTexture, clamp(dispUV, 0.0, 1.0));
+
+                    // RGB chromatic shift radiating from cursor
+                    color.r = texture2D(uTexture, clamp(uv + dir * intensity * 1.2, 0.0, 1.0)).r;
+                    color.g = texture2D(uTexture, clamp(uv,                          0.0, 1.0)).g;
+                    color.b = texture2D(uTexture, clamp(uv - dir * intensity * 0.8,  0.0, 1.0)).b;
+                  }
+
+                  gl_FragColor = mix(vec4(1.,1.,1.,opacity), color, opacity);
+                }
+              `,
+              uniforms: {
+                uTexture: { value: texture },
+                imageAspectRatio: { value: 1.0 },
+                aspectRatio: { value: 1.0 },
+                opacity: { value: 1.0 },
+                hover: { value: 0.0 },
+                uMouse: { value: new THREE.Vector2(0.5, 0.5) }
+              }
+            });
+            material.transparent = true;
+            const mesh = new THREE.Mesh(geometry, material);
+
+            scene.add(mesh);
+
+            this.scene = scene;
+            this.mesh = mesh;
+          }
+
+          update(delta, time) {}
+
+          mouseHandler(mouse, camera) {
+            const { scene, mesh, raycaster } = this;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children);
+
+            // Kill active tweens before starting new ones to prevent collisions
+            gsap.killTweensOf(mesh.material.uniforms.hover);
+            gsap.to(mesh.material.uniforms.hover, {
+              duration: 1.0,
+              value: intersects.length ? 1 : 0
+            });
+
+            // Feed cursor position into shader as UV [0,1] (mouse is in [-1,1])
+            // Three.js UV: x 0=left→1=right, y 0=bottom→1=top
+            mesh.material.uniforms.uMouse.value.set(
+              mouse.x * 0.5 + 0.5,
+              mouse.y * 0.5 + 0.5
+            );
+
+            // Only tilt — no scale/position shift that would expose the white container bg
+            gsap.killTweensOf(mesh.rotation);
+            gsap.to(mesh.rotation, {
+              duration: 0.5,
+              x: -mouse.y * (Math.PI / 4) * 0.12,
+              y: mouse.x * (Math.PI / 4) * 0.12
+            });
+          }
+
+          resetToNeutral() {
+            const { mesh } = this;
+            gsap.killTweensOf(mesh.material.uniforms.hover);
+            gsap.killTweensOf(mesh.rotation);
+
+            gsap.to(mesh.material.uniforms.hover, { duration: 0.8, value: 0 });
+            gsap.to(mesh.rotation, { duration: 0.6, x: 0, y: 0 });
+          }
+        }
+
+        class SceneManager {
+          clock = new THREE.Clock();
+          mouse = new THREE.Vector2();
+
+          buildScene = () => {
+            const scene = new THREE.Scene();
+            return scene;
+          };
+
+          buildRender = ({ width, height }) => {
+            const { canvas } = this;
+            const renderer = new THREE.WebGLRenderer({
+              canvas,
+              antialias: true,
+              alpha: true
+            });
+            const DPR = Math.min(window.devicePixelRatio || 1, 2);
+            renderer.setPixelRatio(DPR);
+            renderer.setSize(width, height, false);
+            renderer.setClearColor(0x000000, 0);
+            return renderer;
+          };
+
+          buildCamera = ({ width, height }) => {
+            const camera = new THREE.PerspectiveCamera(60, width / height, 1, 100);
+            camera.position.z = 5;
+            return camera;
+          };
+
+          createSceneSubjects = scene => {
+            const sceneSubjects = [new PlaneSubject(scene)];
+            return sceneSubjects;
+          };
+
+          constructor(canvas) {
+            this.canvas = canvas;
+            this.screenDimensions = {
+              width: this.canvas.clientWidth || 384,
+              height: this.canvas.clientHeight || 384
+            };
+
+            this.scene = this.buildScene();
+            this.renderer = this.buildRender(this.screenDimensions);
+            this.camera = this.buildCamera(this.screenDimensions);
+            this.sceneSubjects = this.createSceneSubjects(this.scene);
+          }
+
+          update() {
+            const delta = this.clock.getDelta();
+            const elapsed = this.clock.getElapsedTime();
+
+            this.sceneSubjects.forEach(s => (s.update ? s.update(delta, elapsed) : null));
+
+            this.renderer.render(this.scene, this.camera);
+          }
+
+          resizeHandler() {
+            const width = this.canvas.clientWidth || 384;
+            const height = this.canvas.clientHeight || 384;
+
+            this.screenDimensions = { width, height };
+
+            const aspect = width / height;
+            this.camera.aspect = aspect;
+            this.camera.updateProjectionMatrix();
+
+            if (this.sceneSubjects && this.sceneSubjects[0]) {
+              const subject = this.sceneSubjects[0];
+              subject.mesh.material.uniforms.aspectRatio.value = aspect;
+              
+              // Dynamically adjust plane geometry to match viewport aspect ratio, preventing texture stretching
+              subject.mesh.geometry.dispose();
+              subject.mesh.geometry = new THREE.PlaneGeometry(6.8 * aspect, 6.8);
+            }
+
+            this.renderer.setSize(width, height, false);
+          }
+
+          mouseHandler(mousePos) {
+            Object.assign(this.mouse, mousePos);
+            this.sceneSubjects.forEach(s =>
+              s.mouseHandler ? s.mouseHandler(this.mouse, this.camera) : null
+            );
+          }
+
+          resetToNeutral() {
+            this.sceneSubjects.forEach(s =>
+              s.resetToNeutral ? s.resetToNeutral() : null
+            );
+          }
+        }
+
+        const sceneManager = new SceneManager(canvas);
+
+        const resizeCanvas = () => {
+          canvas.width = canvas.clientWidth || 384;
+          canvas.height = canvas.clientHeight || 384;
+          sceneManager.resizeHandler();
+        };
+        const container = canvas.parentElement;
+
+        let isHovered = false;
+        let bounds = null;
+
+        const mouseHandler = e => {
+          if (!isHovered || !bounds) return;
+          const x = ((e.clientX - bounds.left) / bounds.width) * 2 - 1;
+          const y = -((e.clientY - bounds.top) / bounds.height) * 2 + 1;
+          
+          const clampedX = Math.max(-1, Math.min(1, x));
+          const clampedY = Math.max(-1, Math.min(1, y));
+          
+          sceneManager.mouseHandler({ x: clampedX, y: clampedY });
+        };
+
+        const enterMouse = () => {
+          isHovered = true;
+          bounds = canvas.getBoundingClientRect(); // Cache bounds on enter
+        };
+
+        const resetMouse = () => {
+          isHovered = false;
+          bounds = null;
+          sceneManager.resetToNeutral();
+        };
+
+        window.addEventListener('resize', resizeCanvas);
+        container.addEventListener('mouseenter', enterMouse);
+        container.addEventListener('mousemove', mouseHandler);
+        container.addEventListener('mouseleave', resetMouse);
+
+        resizeCanvas();
+        const render = () => {
+          window.requestAnimationFrame(render);
+          sceneManager.update();
+        };
+        render();
+
+         // Direct texture loading engine from pre-cached DOM element (completely CORS-free!)
+        const updateTexture = () => {
+          texture.needsUpdate = true;
+
+          // Dynamically compute the aspect ratio of the image
+          const imgWidth = img.naturalWidth || img.width;
+          const imgHeight = img.naturalHeight || img.height;
+          if (imgWidth && imgHeight) {
+            const aspect = imgWidth / imgHeight;
+            if (sceneManager.sceneSubjects && sceneManager.sceneSubjects[0]) {
+              sceneManager.sceneSubjects[0].mesh.material.uniforms.imageAspectRatio.value = aspect;
+            }
+          }
+
+          // Smoothly reveal canvas and fade out fallback image once compiled
+          canvas.classList.remove('opacity-0');
+          img.classList.add('opacity-0');
+          img.style.pointerEvents = 'none';
+        };
+
+        if (img.complete) {
+          updateTexture();
+        } else {
+          img.onload = updateTexture;
+        }
+
+      } catch (err) {
+        console.error("Three.js avatar initialization failed, falling back to static image:", err);
+      }
+    }
+
+    if (document.readyState === 'complete') {
+      initHeroWebGL();
+    } else {
+      window.addEventListener('load', initHeroWebGL);
+    }
+  })();
+  </script>
+</Section>

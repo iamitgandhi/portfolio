@@ -1,0 +1,25 @@
+# Amit Kumar Gandhi — WooCommerce & WordPress Specialist
+
+WooCommerce & WordPress Specialist with 5+ years of experience building scalable e-commerce stores, custom process automations, CPT/PODS database models, and web scraping dashboards.
+
+## Key Projects
+- [KSR & Associates](https://ksrmassociates.com/): Financial consultancy portal.
+- [Avinash Singh](https://avinashsinghfounder.com/): Executive branding portfolio (Express & Node.js).
+- [Filthy Forty](https://filthyforty.com/): Lifestyle and events platform.
+- [Manish Kumar Singh](https://manishkumarsingh.com/): Executive thought leadership portfolio (Next.js, React, Express, Node.js).
+
+## Agency
+- [BAD Design Media](https://baddesignmedia.com/): Creative agency building premium digital experiences.
+
+## Technical Skills
+- **Core Languages**: PHP, JavaScript, TypeScript, Python, HTML5, CSS3, SQL
+- **Frameworks & Platforms**: WordPress, WooCommerce, Express, Node.js, Next.js, React, Astro
+- **Specialized WordPress Stack**: Gravity Forms, PODS (Custom Post Types), WP REST API, Custom Plugins
+- **Databases**: MySQL, PostgreSQL
+- **Tools**: Git, Docker, Linux, Apache, LiteSpeed, Nginx, Figma
+
+## Links
+- [Website](https://amitkumargandhi.com)
+- [LinkedIn](https://www.linkedin.com/in/amitgandhicodes/)
+- [GitHub](https://github.com/amitgandhicodes/)
+- [X (Twitter)](https://x.com/amitgandhicodes)

@@ -1,0 +1,56 @@
+---
+import Section from "@/components/ui/Section.astro";
+import Container from "@/components/ui/Container.astro";
+import type { ExperienceItem } from "@/data/types";
+
+interface Props {
+  items: ExperienceItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<Section id="experience">
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-12">
+      <!-- Left side: Label -->
+      <div class="lg:col-span-3 reveal">
+        <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-accent font-display">Experience</h2>
+      </div>
+
+      <!-- Right side: Jobs timeline -->
+      <div class="lg:col-span-9 flex flex-col gap-10 relative pl-6 border-l border-line">
+        {
+          items.map((job) => (
+            <article class="relative flex flex-col gap-2 reveal">
+              <!-- Timeline Dot -->
+              <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-accent bg-surface shadow-sm"></div>
+
+              <!-- Header: Company & Dates -->
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span class="text-xl font-bold text-ink font-display">{job.company}</span>
+                <span class="text-xs font-mono text-ink-muted bg-surface-muted border border-line px-2.5 py-1 rounded-full shadow-sm self-start sm:self-auto">
+                  {job.period}
+                </span>
+              </div>
+
+              <!-- Role & Location -->
+              <div class="text-sm font-semibold text-accent mt-0.5">
+                {job.role} <span class="text-ink-muted font-normal">({job.location})</span>
+              </div>
+
+              <!-- Highlights list -->
+              <ul class="mt-3 list-none space-y-2 pl-0" aria-label={`Highlights at ${job.company}`}>
+                {job.highlights.map((h) => (
+                  <li class="relative pl-4 text-xs leading-relaxed text-ink-muted before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-line">
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</Section>

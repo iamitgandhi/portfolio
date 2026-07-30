@@ -1,0 +1,66 @@
+---
+import Container from "@/components/ui/Container.astro";
+
+const faqs = [
+  {
+    question: "What is your core development stack?",
+    answer: "I specialize in the WordPress and WooCommerce ecosystems. For custom development, I write PHP and JavaScript, build relational database structures using PODS/CPT, design custom APIs, and utilize Python for automated web scraping and data integration tasks.",
+  },
+  {
+    question: "How do you optimize WooCommerce load speeds?",
+    answer: "I implement clean coding standards, remove redundant database queries (identifying and resolving slow queries), set up server-side object caching (Redis/Memcache), configure content delivery networks (CDNs), and leverage asset optimization scripts to keep page load times under 2 seconds.",
+  },
+  {
+    question: "Do you build custom plugins or modify existing ones?",
+    answer: "I prefer writing custom plugins from scratch rather than relying on bloated pre-packaged plugins. When third-party plugins are necessary (like Gravity Forms), I use hooks, filters, and actions to customize behavior securely without breaking core updates.",
+  },
+  {
+    question: "How do you handle web scraping and inventory sync?",
+    answer: "I build robust automation scripts that parse supplier XML/JSON feeds or scrape product data using Python or PHP. This data is then securely pushed into WooCommerce using the official REST API or WP-CLI, automating stock level updates and pricing calculations.",
+  },
+  {
+    question: "What is your current availability for freelance or full-time roles?",
+    answer: "I am open to WooCommerce development projects, process automation contracts, and senior WordPress developer positions. Reach out via email (contact@amitkumargandhi.com) or phone, and let's discuss how we can scale your website operations.",
+  },
+];
+---
+
+<section id="faq" class="py-16 sm:py-24 bg-[#0a0a0a] text-neutral-100" style="color-scheme: dark;">
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-12">
+      <!-- Left side: Headers -->
+      <div class="lg:col-span-4 flex flex-col gap-4 p-6 sm:p-8 rounded-[2rem] bg-white border border-[#222222]/10 shadow-sm text-[#121212] reveal" style="color-scheme: light;">
+        <div class="flex">
+          <span class="inline-flex px-2.5 py-0.5 rounded-full bg-[#121212] text-white text-[10px] font-bold uppercase tracking-[0.2em] font-display">FAQ</span>
+        </div>
+        <h2 class="text-3xl font-black tracking-tight text-[#121212]">
+          Answers to common questions.
+        </h2>
+        <p class="text-xs text-[#121212] leading-relaxed">
+          Here is how I work, my developer mindset, and what I can bring to your team.
+        </p>
+      </div>
+
+      <!-- Right side: Accordion list -->
+      <div class="lg:col-span-8 flex flex-col gap-4 reveal-stagger">
+        {
+          faqs.map((faq) => (
+            <details class="group p-5 rounded-2xl border border-[#222222] bg-[#121212] transition-all duration-300 open:border-[#A793AC] open:bg-[#161616] [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex items-center justify-between font-bold text-white cursor-pointer list-none select-none focus:outline-none">
+                <span class="text-sm font-bold tracking-tight font-display">{faq.question}</span>
+                <span class="ml-1.5 shrink-0 rounded-full p-1 bg-[#1a1a1a] group-open:rotate-180 group-open:bg-[#A793AC] group-open:text-[#0a0a0a] transition-all duration-300 border border-[#222222]">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </summary>
+              <div class="mt-4 text-xs text-neutral-300 leading-relaxed border-t border-[#222222]/60 pt-4">
+                {faq.answer}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</section>

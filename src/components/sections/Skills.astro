@@ -1,0 +1,43 @@
+---
+import Section from "@/components/ui/Section.astro";
+import Container from "@/components/ui/Container.astro";
+import SkillBadge from "@/components/ui/SkillBadge.astro";
+import type { SkillGroup } from "@/data/types";
+
+interface Props {
+  groups: SkillGroup[];
+}
+
+const { groups } = Astro.props;
+---
+
+<Section id="skills" partition={false}>
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-12">
+      <!-- Left side: Label -->
+      <div class="lg:col-span-3 reveal">
+        <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-accent font-display">Skills</h2>
+      </div>
+
+      <!-- Right side: Skills Grid -->
+      <div class="lg:col-span-9 grid gap-8 sm:grid-cols-2 reveal-stagger">
+        {
+          groups.map((group) => (
+            <div>
+              <h3 class="mb-3 text-xs font-bold uppercase tracking-[0.08em] text-ink-muted">
+                {group.title}
+              </h3>
+              <ul class="flex flex-wrap gap-2" role="list">
+                {group.items.map((item) => (
+                  <li>
+                    <SkillBadge icon={item.icon} label={item.label} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</Section>

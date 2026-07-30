@@ -1,0 +1,37 @@
+---
+import Section from "@/components/ui/Section.astro";
+import Container from "@/components/ui/Container.astro";
+import type { EducationItem } from "@/data/types";
+
+interface Props {
+  item: EducationItem;
+}
+
+const { item } = Astro.props;
+---
+
+<Section id="education">
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-12">
+      <!-- Left side: Label -->
+      <div class="lg:col-span-3 reveal">
+        <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-accent font-display">Education</h2>
+      </div>
+
+      <!-- Right side: Content -->
+      <div class="lg:col-span-9">
+        <article class="p-6 rounded-3xl border border-line bg-surface-muted shadow-sm flex flex-col gap-2 reveal">
+          <span class="text-xs font-mono text-ink-muted bg-surface border border-line px-2.5 py-1 rounded-full shadow-sm self-start">
+            {item.period}
+          </span>
+          <h3 class="text-xl font-bold text-ink font-display mt-2">
+            {item.degree}
+          </h3>
+          <p class="text-sm text-ink-muted leading-relaxed">
+            {item.school} <span class="text-ink-faint font-medium">({item.location})</span>
+          </p>
+        </article>
+      </div>
+    </div>
+  </Container>
+</Section>

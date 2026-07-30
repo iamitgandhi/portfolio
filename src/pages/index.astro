@@ -1,0 +1,45 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import Hero from "@/components/sections/Hero.astro";
+import Highlights from "@/components/sections/Highlights.astro";
+import About from "@/components/sections/About.astro";
+import Skills from "@/components/sections/Skills.astro";
+import Workflow from "@/components/sections/Workflow.astro";
+import Experience from "@/components/sections/Experience.astro";
+import OpenSource from "@/components/sections/OpenSource.astro";
+import Projects from "@/components/sections/Projects.astro";
+import Education from "@/components/sections/Education.astro";
+import FAQ from "@/components/sections/FAQ.astro";
+import Contact from "@/components/sections/Contact.astro";
+import SiteFooter from "@/components/layout/SiteFooter.astro";
+import { siteContent } from "@/data";
+---
+
+<BaseLayout meta={siteContent.meta} social={siteContent.social}>
+  <div id="top" class="min-h-screen flex flex-col justify-between">
+    <!-- Floating Header/Navbar -->
+    <Navbar author={siteContent.meta.author} />
+    
+    <!-- Main content sections -->
+    <main class="flex-grow">
+      <Hero hero={siteContent.hero} social={siteContent.social} />
+      <Highlights quote={siteContent.footerQuote} />
+      <About />
+      <Skills groups={siteContent.skillGroups} />
+      <Workflow />
+      <Experience items={siteContent.experience} />
+      <OpenSource items={siteContent.openSource} />
+      <Projects items={siteContent.projects} />
+      <Education item={siteContent.education} />
+      <FAQ />
+      <Contact contact={siteContent.contact} />
+    </main>
+
+    <!-- Footer -->
+    <SiteFooter
+      author={siteContent.meta.author}
+      social={siteContent.social}
+    />
+  </div>
+</BaseLayout>

@@ -1,0 +1,51 @@
+---
+import Container from "@/components/ui/Container.astro";
+import type { SocialLink } from "@/data/types";
+
+interface Props {
+  author: string;
+  social: SocialLink[];
+}
+
+const { author, social } = Astro.props;
+---
+
+<footer class="bg-[#000] text-neutral-400 py-12 sm:py-16 border-t border-[#1f1f1f]" style="color-scheme: dark;">
+  <Container>
+    <div class="flex flex-col items-center text-center gap-6">
+      <!-- 1. Name -->
+      <span class="text-xl font-bold text-white font-display">{author}</span>
+      
+      <!-- 2. Text -->
+      <p class="text-sm text-neutral-200 max-w-md leading-relaxed">
+        Specialist in building high-performance WooCommerce stores, automated workflows, and custom WordPress database designs.
+      </p>
+      
+      <!-- 3. Social -->
+      <div class="flex flex-wrap items-center justify-center gap-6 mt-2">
+        {
+          social.map((s) => (
+            <a
+              href={s.href}
+              class="text-xs text-neutral-400 hover:text-[#4A6073] transition-colors duration-200"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {s.label}
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- Copyright & Credits -->
+      <div class="flex flex-col gap-1 text-[10px] text-neutral-400 font-mono mt-6">
+        <p>
+          &copy; {new Date().getFullYear()} {author}. All rights reserved.
+        </p>
+        <p>
+          Designed & Developed by Me at <a href="https://baddesignmedia.com/" target="_blank" rel="noopener noreferrer" class="underline hover:text-[#4A6073] transition-colors duration-200">BAD</a>.
+        </p>
+      </div>
+    </div>
+  </Container>
+</footer>
