@@ -41,7 +41,7 @@ const jsonLd = [personJsonLd(meta, Astro.site, social), webSiteJsonLd(meta, Astr
     </script>
 
     <!-- SecurePrivacy Cookie Consent Script -->
-    <script is:inline src="https://app.secureprivacy.ai/script/6a5c3a9b6f27920a378af02f.js"></script>
+    <script is:inline async src="https://app.secureprivacy.ai/script/6a5c3a9b6f27920a378af02f.js"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -91,9 +91,20 @@ const jsonLd = [personJsonLd(meta, Astro.site, social), webSiteJsonLd(meta, Astr
     <!-- Preload LCP Image -->
     <link rel="preload" as="image" href="/AmitG.webp" type="image/webp" fetchpriority="high" />
 
-    <!-- WebGL & Animation Libraries (for interactive avatar shader) -->
-    <script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Desktop-only dynamic load for WebGL avatar shader libraries (bypasses 660KB download on mobile) -->
+    <script is:inline>
+      if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+        const s1 = document.createElement('script');
+        s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+        s1.async = true;
+        document.head.appendChild(s1);
+
+        const s2 = document.createElement('script');
+        s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+        s2.async = true;
+        document.head.appendChild(s2);
+      }
+    </script>
 
     <slot name="head" />
   </head>

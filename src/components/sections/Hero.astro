@@ -69,6 +69,10 @@ const { hero, social } = Astro.props;
                 src="/AmitG.webp"
                 alt={hero.avatar.alt}
                 loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                width="400"
+                height="500"
                 class="absolute inset-0 w-full h-full object-cover rounded-[20px] transition-opacity duration-300"
                 style={{ objectPosition: '50% 0%' }}
               />
@@ -424,10 +428,21 @@ const { hero, social } = Astro.props;
       }
     }
 
+    let attempts = 0;
+    function checkAndInit() {
+      if (window.innerWidth < 1024) return;
+      if (window.THREE && window.gsap) {
+        initHeroWebGL();
+      } else if (attempts < 30) {
+        attempts++;
+        setTimeout(checkAndInit, 100);
+      }
+    }
+
     if (document.readyState === 'complete') {
-      initHeroWebGL();
+      checkAndInit();
     } else {
-      window.addEventListener('load', initHeroWebGL);
+      window.addEventListener('load', checkAndInit);
     }
   })();
   </script>
