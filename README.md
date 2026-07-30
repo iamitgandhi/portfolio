@@ -1,125 +1,130 @@
-# Hi, I'm Amit Kumar Gandhi 👋
-### WooCommerce Specialist | WordPress Automation & Custom Workflows
+# Personal Portfolio Website
 
-[![Live Preview](https://img.shields.io/badge/Live_Preview-www.amitkumargandhi.com-00C853?style=for-the-badge&logo=googlechrome&logoColor=white)](https://www.amitkumargandhi.com/)
-[![Resume](https://img.shields.io/badge/Download_Resume-PDF-blue?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](https://www.amitkumargandhi.com/Amit%20Kumar%20Gandhi%20-%20Resume.pdf)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+A modern, high-performance portfolio website built with **Astro**, **Tailwind CSS**, and **Three.js WebGL**.
 
----
-
-## 🌐 Portfolio Preview
-
-[![Amit Kumar Gandhi Portfolio Preview](./public/preview.png)](https://www.amitkumargandhi.com/)
-
-👉 **Live Website:** [https://www.amitkumargandhi.com/](https://www.amitkumargandhi.com/)
+[![Live Preview](https://img.shields.io/badge/Live_Website-www.amitkumargandhi.com-00C853?style=for-the-badge&logo=googlechrome&logoColor=white)](https://www.amitkumargandhi.com/)
+[![Astro](https://img.shields.io/badge/Astro_v7-BC52EE?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
+[![Hostinger](https://img.shields.io/badge/Hosted_on-Hostinger-673DE6?style=for-the-badge&logo=hostinger&logoColor=white)](https://www.hostinger.com/)
 
 ---
 
-## 🚀 About Me
+## 🌐 Website Preview
 
-I am a **WooCommerce Specialist and WordPress Integrator** with **5+ years of hands-on experience** building high-performance e-commerce platforms, custom content management systems, and automated workflow solutions.
+[![Portfolio Website Preview](./public/preview.png)](https://www.amitkumargandhi.com/)
 
-I specialize in **PODS & CPT architecture**, **Gravity Forms integrations**, **web scraping**, and **third-party API connections** — focused on building faster websites, cleaner workflows, and automated operations that support real business growth.
+👉 **Live URL:** [https://www.amitkumargandhi.com/](https://www.amitkumargandhi.com/)
 
 ---
 
-## 🛠️ Technologies & Badges
+## ⚡ Technical Features & Architecture
 
-### Core Tech & Frameworks
+* **Astro Static Site Generation (SSG):** Built with Astro 7 for ultra-fast, zero-JS-by-default static HTML rendering and minimal asset payload.
+* **Interactive 3D WebGL Shader:** Custom Three.js fragment shader with real-time cursor-following chromatic aberration and RGB displacement effects. Features screen-width viewport detection to automatically bypass 3D rendering on mobile devices (< 1024px) for optimal mobile battery life and speed.
+* **Reflow-Free Background Grid:** High-performance canvas grid background using document-relative scroll offset range caching instead of layout-thrashing DOM queries, maintaining `~0ms` Total Blocking Time (TBT).
+* **Preloaded LCP Assets:** Optimized image loading via `<link rel="preload" as="image" fetchpriority="high">` tag in `<head>` for rapid Largest Contentful Paint.
+* **Analytics & Privacy Integration:** Integrated Google Analytics (`gtag.js`) and SecurePrivacy cookie consent manager.
+* **Production Express Server:** Embedded lightweight `server.mjs` Node.js Express server configured with long-term static asset caching headers.
+
+---
+
+## 🛠️ Technology Stack & Badges
+
+### Core Frameworks & Languages
 ![Astro](https://img.shields.io/badge/Astro_v7-BC52EE?style=for-the-badge&logo=astro&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v3-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript_ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-### WordPress & E-Commerce Specialization
-![WordPress](https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white)
-![WooCommerce](https://img.shields.io/badge/WooCommerce-96588A?style=for-the-badge&logo=woocommerce&logoColor=white)
-![Gravity Forms](https://img.shields.io/badge/Gravity_Forms-FF6600?style=for-the-badge&logo=gravityforms&logoColor=white)
-![PODS Framework](https://img.shields.io/badge/PODS_CPT_Architecture-006699?style=for-the-badge&logo=wordpress&logoColor=white)
-![Figma](https://img.shields.io/badge/Figma_UI/UX-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
-
-### 3D Visuals & Motion Graphics
+### 3D Visuals & Animation
 ![Three.js](https://img.shields.io/badge/Three.js_WebGL-000000?style=for-the-badge&logo=three.js&logoColor=white)
 ![GSAP](https://img.shields.io/badge/GSAP_Animations-88CE02?style=for-the-badge&logo=greensock&logoColor=white)
 
-### Backend & Infrastructure
+### Server & Infrastructure
 ![Node.js](https://img.shields.io/badge/Node.js_v22.x-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
-![Web Scraping](https://img.shields.io/badge/Web_Scraping_&_Automation-4B0082?style=for-the-badge&logo=python&logoColor=white)
-![Hostinger](https://img.shields.io/badge/Hostinger_Deployment-673DE6?style=for-the-badge&logo=hostinger&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![Hostinger](https://img.shields.io/badge/Hostinger_Web_App-673DE6?style=for-the-badge&logo=hostinger&logoColor=white)
 
 ---
 
-## 💡 Why Work With Me?
+## 📁 Repository Structure
 
-* **5+ Years of Proven Industry Expertise:** I have spearheaded end-to-end WordPress & WooCommerce integrations for companies like *vSplash Techlabs* and *AffinityX* (in collaboration with GoDaddy).
-* **Custom CPT & PODS Architecture:** I don't just build basic sites — I architect custom content models, custom taxonomies, and data schemas tailored to complex business requirements.
-* **Automation & Web Scraping:** I develop custom data collection tools, automated sync scripts, and Gravity Forms workflows to eliminate manual effort and streamline operations.
-* **Performance & Core Web Vitals Optimization:** My sites are engineered for ultra-fast load speeds, mathematical layout comparison algorithms (TBT < 160ms), and 100% clean Cumulative Layout Shift (CLS).
-* **Pixel-Perfect UI/UX:** Translating Figma designs into responsive, accessible, cross-browser compatible interfaces with interactive WebGL visual effects.
+```
+├── public/                     # Static assets (images, favicon, resume PDF, htaccess)
+│   ├── AmitG.webp              # Optimized profile WebP
+│   ├── Amit Kumar Gandhi - Resume.pdf # Portfolio resume file
+│   └── preview.png             # Website preview screenshot
+├── src/
+│   ├── components/             # UI and section components
+│   │   ├── layout/             # Navbar and SiteFooter
+│   │   ├── sections/           # Hero, About, Projects, Experience, Skills, Contact, etc.
+│   │   └── ui/                 # Container, Section, SkillBadge, ResumeButton
+│   ├── data/                   # Centralized site content definitions
+│   │   ├── site.ts             # Primary configuration data object
+│   │   └── types.ts            # TypeScript interfaces
+│   ├── layouts/                # BaseLayout document wrapper & analytics head tags
+│   ├── pages/                  # Page entry points (index.astro, 404.astro, robots.txt.ts)
+│   └── styles/                 # Global CSS styles & Tailwind directives
+├── astro.config.mjs            # Astro configuration
+├── server.mjs                  # Production Node.js Express server
+└── package.json                # Dependencies and build scripts
+```
 
 ---
 
-## ⚡ Portfolio Features
+## 💻 Local Development Setup
 
-* **3D WebGL Shader Profile Avatar:** Interactive cursor-following chromatic aberration & displacement shader built with Three.js (desktop only; mobile devices use a lightweight static fallback).
-* **Interactive Range-Cached Background Grid:** O(1) mathematical scroll range evaluation on dark sections to eliminate layout thrashing reflows.
-* **Analytics & Privacy Integration:** Built-in Google Analytics (`gtag.js`) and SecurePrivacy cookie consent integration.
-* **Direct Resume Download:** One-click download for my complete multi-page resume.
+### Prerequisites
+* **Node.js:** `>= 22.12.0`
+* **Package Manager:** `npm`
 
----
-
-## 💻 Local Development
-
-Clone the repository and install dependencies:
+### Commands
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/iamitgandhi/portfolio-website.git
 cd portfolio-website
 
-# Install dependencies (Node 22+ recommended)
+# 2. Install dependencies
 npm install
 
-# Start local dev server
+# 3. Start local development server
 npm run dev
-```
 
-Visit `http://localhost:4321` in your browser.
+# 4. Check TypeScript & Astro diagnostics
+npm run check
 
----
-
-## 📦 Production Build & Running
-
-```bash
-# Build static site bundle
+# 5. Build for production
 npm run build
 
-# Run local Express server (port 3000)
+# 6. Preview production build via Express server
 npm start
 ```
 
+Local dev server runs on `http://localhost:4321`.
+
 ---
 
-## ☁️ Deployment on Hostinger
+## ☁️ Hostinger Node.js Web App Deployment
 
-This project is configured for **Hostinger Node.js Web App** deployment:
+This website is deployed as a **Node.js Web App** on Hostinger:
 
-1. **Connect GitHub Repo:** In Hostinger hPanel ➔ **Node.js Web App** ➔ connect `iamitgandhi/portfolio-website`.
-2. **Build Settings:**
+1. **Connect Repository:** In Hostinger hPanel ➔ **Node.js Web App** ➔ connect `iamitgandhi/portfolio-website`.
+2. **Build Configuration:**
+   * **Framework preset:** `Express`
    * **Node version:** `22.x`
+   * **Root directory:** `./`
    * **Package manager:** `npm`
    * **Entry file:** `server.mjs`
-   * **Build command:** `npm install && npm run build`
-3. **Environment Variable:** Set `SITE_URL=https://www.amitkumargandhi.com`
+3. **Build & Start Commands:**
+   * **Build Command:** `npm install && npm run build`
+   * **Start Command:** `npm start`
+4. **Environment Variables:**
+   * `SITE_URL=https://www.amitkumargandhi.com`
 
 ---
 
-## 📬 Contact Me
+## 📝 License
 
-* 🌐 **Website:** [www.amitkumargandhi.com](https://www.amitkumargandhi.com)
-* 💼 **LinkedIn:** [linkedin.com/in/iamitgandhi](https://www.linkedin.com/in/iamitgandhi)
-* 🐙 **GitHub:** [github.com/iamitgandhi](https://github.com/iamitgandhi)
-* ✉️ **Email:** [sinhaamit396@gmail.com](mailto:sinhaamit396@gmail.com)
+This project is open-source under the [MIT License](LICENSE).
